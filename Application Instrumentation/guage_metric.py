@@ -2,14 +2,14 @@ import http.server
 import time
 from prometheus_client import start_http_server, Gauge
 
-REQUEST_IN_PROGRESS = Gauge('reuests_inprogress', "Number of Live Request on Application")
+REQUEST_IN_PROGRESS = Gauge('requests_inprogress', "Number of Live Request on Application")
 REQUEST_LAST_EXECUTED = Gauge("request_last_served", "Time the application was last servered") 
 
 class HandleRequests(http.server.BaseHTTPRequestHandler):
 
     @REQUEST_IN_PROGRESS.track_inprogress()
     def do_GET(self):
-        #REQUEST_IN_PROGRESS.inc() 
+        REQUEST_IN_PROGRESS.inc() 
         time.sleep(5)
         self.send_response(200)
         self.send_header("Content-type", "text/html")
